@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "outDir": "./www",
+    "moduleResolution":"nodenext",
+    "declaration": true,
+    "declarationDir": "./www/typings",
+    "allowJs": true,
+    "checkJs": true,
+    "allowSyntheticDefaultImports": true,    
+    "resolveJsonModule": true,
+    "experimentalDecorators": true
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": ["./node_modules"]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "material-web-catalog",
+  "description": "",
+  "version": "1.0.0",
+  "main": "rollup.config.js",
+  "scripts": {
+    "build": "node generate-manifest.js && rollup -c",
+    "watch": "rollup -c -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "rollup": "^3.20.7",
+    "tslib": "^2.5.0"
+  },
+  "dependencies": {
+    "@material/web": "^1.0.0-pre.6",
+    "colorthief": "^2.4.0",
+    "lit": "^2.7.2",
+    "showdown": "^2.1.0",
+    "showdown-highlight": "^3.1.0"
+  }
+}
