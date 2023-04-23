@@ -66355,7 +66355,7 @@ let Shell = class Shell extends s {
         await this.updateComplete;
         onhashchange = this._onhashchange.bind(this);
         if (!location.hash)
-            location.hash = 'home';
+            location.hash = '#!/catalog';
         else
             this._onhashchange();
     }

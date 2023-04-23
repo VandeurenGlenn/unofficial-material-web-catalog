@@ -121,7 +121,7 @@ export class Shell extends LitElement {
     super.connectedCallback()
     await this.updateComplete
     onhashchange = this._onhashchange.bind(this)
-    if (!location.hash) location.hash = 'home'
+    if (!location.hash) location.hash = '#!/catalog'
     else this._onhashchange()
   }
 
