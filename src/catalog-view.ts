@@ -72,7 +72,7 @@ export class CatalogView extends LitElement {
       <md-elevation></md-elevation>
       <md-ripple></md-ripple>
         <strong href="#!/${item}" headline=${item} noninteractive>${item}</strong>
-        <img src=${img}>
+        <img src=${img} loading="lazy">
       </a>
     `})
     }
