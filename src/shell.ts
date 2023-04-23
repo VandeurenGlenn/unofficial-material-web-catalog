@@ -4,6 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import '@material/web/list/list-item-link.js'
 import '@material/web/list/list.js'
 import '@material/web/divider/divider.js'
+import '@material/web/iconbutton/standard-icon-button.js'
 import './doc-view.js'
 import './catalog-view.js'
 
@@ -18,6 +19,30 @@ const manifest = [
 
 @customElement('app-shell')
 export class Shell extends LitElement {
+  @property({type: Boolean, reflect: true })
+  
+  @property({type: Boolean, reflect: true })
+  set isMobile(value) {
+    console.log('isMobile');
+    if (this._isMobile === value) return
+    this._isMobile = value
+    if (value) {
+      this._drawer.setAttribute('type', 'modal')
+      this._drawer.removeAttribute('open')
+      this.setAttribute('isMobile', '')
+    } else {
+      this._drawer.setAttribute('type', 'dismissible')
+      this._drawer.setAttribute('open', '')
+      this.removeAttribute('isMobile')
+    }
+    console.log('isMobile');
+    document.dispatchEvent(new CustomEvent('layout-change', { detail: value ? 'mobile' : 'desktop'}))
+  }
+
+  get isMobile() {
+    return this._isMobile
+  }
+  
   docURL = 'https://raw.githubusercontent.com/material-components/material-web/master/docs/components/';
 
   static properties = {
@@ -25,7 +50,9 @@ export class Shell extends LitElement {
   }
   
 
-  
+  get _drawer() {
+    return this.renderRoot.querySelector('aside')
+  }
   static styles = [
     css`
       :host {
@@ -43,9 +70,13 @@ export class Shell extends LitElement {
       }
 
       header {
+        display: flex;
         height: var(--header-height);
         background-color: var(--header-background);
         width: 100%;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 12px;
       }
 
       aside {
@@ -59,6 +90,7 @@ export class Shell extends LitElement {
         bottom: 0;
         left: 0;
         background: var(--header-background);
+        z-index: 1000;
       }
 
       [divider] {
@@ -114,12 +146,41 @@ export class Shell extends LitElement {
         flex-direction: column;
         display: flex;
       }
+
+      .menu-button {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      :host([isMobile]) .menu-button {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      :host([isMobile]) main {
+        width: 100%;
+      }
+
+      :host([isMobile]) aside {
+        position: fixed;
+        transform: translateX(-110%);
+      }
+
+      :host([isMobile]) aside[open] {
+        transform: translateX(0);
+      }
     `
   ];
 
-  async connectedCallback(): void {
+  async connectedCallback(): Promise<void> {
     super.connectedCallback()
     await this.updateComplete
+    let media = matchMedia("(min-width: 1200px)");
+    const onMedia = ({matches}) => {
+      this.isMobile = !matches
+    }
+    media.addEventListener('change', onMedia)
+    onMedia(media)
     onhashchange = this._onhashchange.bind(this)
     if (!location.hash) location.hash = '#!/catalog'
     else this._onhashchange()
@@ -141,6 +202,7 @@ export class Shell extends LitElement {
 
   render() {
     return html`
+    
     <link rel="stylesheet" href="./styles/hljs/default.css">
     <aside>
       <md-list>
@@ -152,7 +214,9 @@ export class Shell extends LitElement {
       </md-list>
     </aside>
 
-    <header></header>
+    <header>
+    <md-standard-icon-button class="menu-button" @click=${() => this._drawer.hasAttribute('open') ? this._drawer.removeAttribute('open') : this._drawer.setAttribute('open', '')}>menu</md-standard-icon-button>
+    </header>
     <main>
       <doc-view></doc-view>
       <catalog-view .items=${manifest}></catalog-view>

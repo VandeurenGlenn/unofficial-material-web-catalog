@@ -57,11 +57,10 @@ export class DocView extends LitElement {
     css`
       :host {
         display: block;
-        max-width: 100%;
         box-sizing: border-box;
         padding: 12px 24px;
         position: absolute;
-        max-width: 960px;
+        max-width: 100%;
       }
     `
   ];
