@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "rollup.config.js",
   "scripts": {
-    "build": "node generate-manifest.js && rollup -c",
+    "build": "rollup -c",
     "watch": "rollup -c -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
