@@ -34,7 +34,10 @@ export class DocView extends LitElement {
 
   async renderDoc(value) {
     await this.updateComplete
-    const md = this.converter.makeHtml(value).replace(/src="images\//g, 'crossorigin="anonymous" src="https://raw.githubusercontent.com/material-components/material-web/master/docs/components/images/')
+    let url
+    if (this.isComponent) url = 'https://raw.githubusercontent.com/material-components/material-web/master/docs/components/images/'
+    else url = 'https://raw.githubusercontent.com/material-components/material-web/master/docs/images/'
+    const md = this.converter.makeHtml(value).replace(/src="images\//g, `crossorigin="anonymous" src="${url}`)
     this.innerHTML = md
     const img = this.querySelector('img');
 

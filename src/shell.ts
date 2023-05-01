@@ -9,12 +9,14 @@ import './doc-view.js'
 import './catalog-view.js'
 
 const manifest = [
-  'button',
-  'checkbox',
-  'divider',
-  'elevation',
-  'icon-button',
-  'icon'
+  'quick-start',
+  'theming',
+  'components/button',
+  'components/checkbox',
+  'components/divider',
+  'components/elevation',
+  'components/icon-button',
+  'components/icon'
 ]
 
 @customElement('app-shell')
@@ -43,7 +45,7 @@ export class Shell extends LitElement {
     return this._isMobile
   }
   
-  docURL = 'https://raw.githubusercontent.com/material-components/material-web/master/docs/components/';
+  docURL = 'https://raw.githubusercontent.com/material-components/material-web/main/docs/';
 
   static properties = {
     catalogShown: { type: Boolean, reflect: true}  
@@ -197,6 +199,7 @@ export class Shell extends LitElement {
     if (view === 'catalog') return this.catalogShown = true
     this.catalogShown = false
     const response = await fetch(`${this.docURL}${view}.md`)
+    this.renderRoot.querySelector('doc-view').isComponent = view.includes('components/')
     this.renderRoot.querySelector('doc-view').doc = await response.text()
   }
 
