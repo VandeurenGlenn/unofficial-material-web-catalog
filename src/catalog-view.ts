@@ -63,15 +63,35 @@ export class CatalogView extends LitElement {
     `
   ];
 
+  #pngOrGif(name) {
+    if (name === 'icon' || name === 'focusring' || name === 'linearprogress') return 'gif'
+    return 'png'
+  }
+
   render() {
+    const items = this.items
+      .filter(item => !item.includes('quick-start') && !item.includes('theming'))
+      .map(item => {
+        const docName = item
+        if (item.includes('-')) {
+          const parts = item.split('-')
+          item = ''
+          for (const part of parts) {
+            item += part
+          }
+        }
+        return {name: item.replace('components/', ''), docName: docName.replace('components/', '')}
+      })
+
+    
     return html`
-    ${map(this.items, item => {
-      const img = `https://raw.githubusercontent.com/material-components/material-web/master/docs/components/images/${item === 'icon-button' ? 'iconbutton' : item}/hero.${item === 'icon' ? 'gif' : 'png'}`
+    ${map(items, item => {
+      const img = `https://raw.githubusercontent.com/material-components/material-web/master/docs/components/images/${item.name === 'focusring' ? 'focus' : item.name}/hero.${this.#pngOrGif(item.name)}`
       return html`
-      <a class="catalog-item" href="#!/${item}">
+      <a class="catalog-item" href="#!/${item.docName}">
       <md-elevation></md-elevation>
       <md-ripple></md-ripple>
-        <strong href="#!/${item}" headline=${item} noninteractive>${item}</strong>
+        <strong href="#!/${item.docName}" headline=${item.name} noninteractive>${item.name}</strong>
         <img src=${img} loading="lazy">
       </a>
     `})

@@ -7,20 +7,25 @@ import '@material/web/divider/divider.js'
 import '@material/web/iconbutton/standard-icon-button.js'
 import './doc-view.js'
 import './catalog-view.js'
+import '@material/web/list/list-item.js'
 
-const manifest = [
-  'quick-start',
-  'theming',
-  'components/button',
-  'components/checkbox',
-  'components/circular-progress',
-  'components/divider',
-  'components/elevation',
-  'components/focus-ring',
-  'components/icon-button',
-  'components/icon',
-  'components/linear-progress',
-]
+const manifest = {
+  introduction: [
+    'quick-start',
+    'theming',
+  ],
+  components: [
+    'button',
+    'checkbox',
+    'circular-progress',
+    'divider',
+    'elevation',
+    'focus-ring',
+    'icon-button',
+    'icon',
+    'linear-progress'
+  ]
+}
 
 @customElement('app-shell')
 export class Shell extends LitElement {
@@ -174,6 +179,14 @@ export class Shell extends LitElement {
       :host([isMobile]) aside[open] {
         transform: translateX(0);
       }
+
+      md-list-item[non-interactive] {
+        pointer-events: none;
+      }
+
+      aside {
+        overflow-y: auto;
+      }
     `
   ];
 
@@ -201,8 +214,9 @@ export class Shell extends LitElement {
     
     if (view === 'catalog') return this.catalogShown = true
     this.catalogShown = false
-    const response = await fetch(`${this.docURL}${view}.md`)
-    this.renderRoot.querySelector('doc-view').isComponent = view.includes('components/')
+    const isComponent = manifest.components.includes(view)
+    const response = await fetch(`${this.docURL}${isComponent ? `components/${view}` : view}.md`)
+    this.renderRoot.querySelector('doc-view').isComponent = isComponent
     this.renderRoot.querySelector('doc-view').doc = await response.text()
   }
 
@@ -212,9 +226,16 @@ export class Shell extends LitElement {
     <link rel="stylesheet" href="./styles/hljs/default.css">
     <aside>
       <md-list>
-        <md-list-item-link href="#!/catalog" headline="catalog">catalog</md-list-item-link>
+        <md-list-item non-interactive headline="introduction">introduction</md-list-item>
         <md-divider role="seperator"></md-divider>
-        ${map(manifest, (key) => html`
+        <md-list-item-link href="#!/catalog" headline="catalog">catalog</md-list-item-link>
+        ${map(manifest.introduction, (key) => html`
+          <md-list-item-link href="#!/${key}" headline=${key}>${key}</md-list-item-link>
+        `)}
+        <md-divider role="seperator"></md-divider>
+        <md-list-item non-interactive headline="components">components</md-list-item>
+        <md-divider role="seperator"></md-divider>
+        ${map(manifest.components, (key) => html`
           <md-list-item-link href="#!/${key}" headline=${key}>${key}</md-list-item-link>
         `)}
       </md-list>
@@ -225,7 +246,7 @@ export class Shell extends LitElement {
     </header>
     <main>
       <doc-view></doc-view>
-      <catalog-view .items=${manifest}></catalog-view>
+      <catalog-view .items=${manifest.components}></catalog-view>
     </main>
     
     `;

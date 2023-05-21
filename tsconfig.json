@@ -10,7 +10,10 @@
     "checkJs": true,
     "allowSyntheticDefaultImports": true,    
     "resolveJsonModule": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "types": [
+      "@material/web"
+    ]
   },
   "include": [
     "./src/**/*"
