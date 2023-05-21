@@ -13,10 +13,13 @@ const manifest = [
   'theming',
   'components/button',
   'components/checkbox',
+  'components/circular-progress',
   'components/divider',
   'components/elevation',
+  'components/focus-ring',
   'components/icon-button',
-  'components/icon'
+  'components/icon',
+  'components/linear-progress',
 ]
 
 @customElement('app-shell')
